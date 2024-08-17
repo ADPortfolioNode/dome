@@ -1,4 +1,19 @@
-from pathlib import Path
+
+from openai import OpenAI
+import os
+
+
+app = Flask(__name__)
+client = OpenAI(api_key=os.environ.get("GPT4OMINI_API_KEY"))
+
+@app.route('/api/audio', methods=['GET'])
+def audio():
+    data = request.json
+    messages = data.get('messages', [])
+    
+    
+    
+    from pathlib import Path
 import openai
 
 speech_file_path = Path(__file__).parent / "speech.mp3"
