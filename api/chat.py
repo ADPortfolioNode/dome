@@ -1,7 +1,7 @@
 
 from openai import OpenAI
 import os
-
+import openai from Request
 
 app = Flask(__name__)
 client = OpenAI(api_key=os.environ.get("GPT4OMINI_API_KEY"))
