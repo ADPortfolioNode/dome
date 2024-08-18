@@ -6,7 +6,7 @@ import os
 app = Flask(__name__)
 CORS(app) 
 # Initialize the OpenAI client with your API key
-openai.api_key = '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' 
+openai.api_key = '<DomeGPT4oMini>' 
 
 @app.route('/', methods=['GET'])
 def index():
