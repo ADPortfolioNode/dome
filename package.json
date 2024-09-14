@@ -1,6 +1,10 @@
 {
   "dependencies": {
     "jslint": "^0.12.1",
-    "openai": "^4.0.0"
+    "openai": "^4.0.0",
+    "requirements": "^2.0.2"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
   }
 }

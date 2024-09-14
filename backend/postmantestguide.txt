@@ -1,0 +1,201 @@
+Postman Test Guide for AI Agent API
+
+Environment Setup:
+- Create a new environment in Postman
+- Add variable: base_url = http://localhost:5000 (or your server's address)
+
+1. Concierge Chat
+   Method: POST
+   URL: {{base_url}}/api/concierge
+   Headers: Content-Type: application/json
+   Body: 
+   {
+     "message": "Create a simple web application that displays the current weather"
+   }
+   Expected: JSON with "response", "plan", and "execution_results"
+
+2. List Models
+   Method: GET
+   URL: {{base_url}}/api/models
+   Expected: JSON array of available models
+
+3. Retrieve Model
+   Method: GET
+   URL: {{base_url}}/api/models/gpt-3.5-turbo
+   Expected: JSON object with model details
+
+4. Create Completion
+   Method: POST
+   URL: {{base_url}}/api/completions
+   Headers: Content-Type: application/json
+   Body:
+   {
+     "model": "text-davinci-002",
+     "prompt": "Translate the following English text to French: 'Hello, how are you?'",
+     "max_tokens": 60
+   }
+   Expected: JSON object containing the completion
+
+5. Create Chat Completion
+   Method: POST
+   URL: {{base_url}}/api/chat/completions
+   Headers: Content-Type: application/json
+   Body:
+   {
+     "model": "gpt-3.5-turbo",
+     "messages": [
+       {"role": "system", "content": "You are a helpful assistant."},
+       {"role": "user", "content": "What's the capital of France?"}
+     ]
+   }
+   Expected: JSON object containing the chat completion
+
+6. Create Image
+   Method: POST
+   URL: {{base_url}}/api/images/generations
+   Headers: Content-Type: application/json
+   Body:
+   {
+     "prompt": "A cute baby sea otter",
+     "n": 1,
+     "size": "1024x1024"
+   }
+   Expected: JSON object containing image URLs
+
+7. Create Embedding
+   Method: POST
+   URL: {{base_url}}/api/embeddings
+   Headers: Content-Type: application/json
+   Body:
+   {
+     "model": "text-embedding-ada-002",
+     "input": "The food was delicious and the waiter..."
+   }
+   Expected: JSON object containing the embedding
+
+8. Create Transcription
+   Method: POST
+   URL: {{base_url}}/api/audio/transcriptions
+   Headers: Content-Type: multipart/form-data
+   Body (form-data):
+   - Key: file, Value: [select an audio file], Type: File
+   - Key: model, Value: whisper-1
+   Expected: JSON object containing the transcription
+
+9. List Agents
+   Method: GET
+   URL: {{base_url}}/api/agents
+   Expected: JSON array of agents
+
+10. Create Agent
+    Method: POST
+    URL: {{base_url}}/api/agents
+    Headers: Content-Type: application/json
+    Body:
+    {
+      "name": "Weather Expert",
+      "role": "Weather Information Specialist",
+      "background": "Expert in providing accurate weather information and forecasts."
+    }
+    Expected: JSON object of the created agent
+
+11. Chat with Agent
+    Method: POST
+    URL: {{base_url}}/api/chat/1 (replace 1 with actual agent ID)
+    Headers: Content-Type: application/json
+    Body:
+    {
+      "message": "What's the weather like today?"
+    }
+    Expected: JSON object containing the agent's response
+
+12. Assign Task to Agent
+    Method: POST
+    URL: {{base_url}}/api/task/1 (replace 1 with actual agent ID)
+    Headers: Content-Type: application/json
+    Body:
+    {
+      "task": "Provide a 5-day weather forecast for New York City"
+    }
+    Expected: JSON object containing the task result
+
+13. Add Knowledge
+    Method: POST
+    URL: {{base_url}}/api/knowledge
+    Headers: Content-Type: application/json
+    Body:
+    {
+      "text": "The Earth's atmosphere is composed primarily of nitrogen and oxygen.",
+      "metadata": {
+        "source": "Atmospheric Science Textbook",
+        "chapter": "Composition of the Atmosphere"
+      }
+    }
+    Expected: JSON object confirming knowledge addition
+
+14. Start Web Crawl
+    Method: POST
+    URL: {{base_url}}/api/fetchdee/crawl
+    Headers: Content-Type: application/json
+    Body:
+    {
+      "start_url": "https://en.wikipedia.org/wiki/Artificial_intelligence",
+      "max_pages": 5
+    }
+    Expected: JSON object confirming crawl completion and knowledge addition
+
+Testing Steps:
+1. Send the request
+2. Verify status code (200 for success)
+3. Check response body for expected data
+4. Use response data in subsequent requests if applicable
+5. Handle errors and check for appropriate error responses with invalid inputs
+
+ADDITIONAL TESTING CONSIDERATIONS
+
+15. Error Handling Tests
+    For each endpoint, test with invalid inputs to ensure proper error handling:
+    - Missing required fields
+    - Invalid data types
+    - Out-of-range values
+    - Unauthorized access (if applicable)
+
+    Expected: Appropriate error messages and status codes (e.g., 400 for bad requests, 401 for unauthorized, 404 for not found)
+
+16. Performance Testing
+    - Use Postman's Collection Runner to execute multiple requests
+    - Monitor response times for each endpoint
+    - Test with varying payload sizes for POST requests
+    - Simulate concurrent users with Postman's load testing feature (if available)
+
+17. Authentication Testing (if implemented)
+    - Test endpoints with and without valid authentication tokens
+    - Verify that protected endpoints reject unauthorized access
+    - Check token expiration and refresh mechanisms
+
+18. Data Persistence
+    - After creating or modifying data (e.g., adding knowledge, creating agents), verify persistence by retrieving the data in subsequent requests
+    - Restart the server and ensure data is still accessible
+
+19. Concurrency Testing
+    - Simulate multiple users interacting with the same resources (e.g., chatting with the same agent)
+    - Check for race conditions or data inconsistencies
+
+20. Edge Cases
+    - Test with maximum allowed input sizes
+    - Test with special characters or Unicode in inputs
+    - Test boundary conditions (e.g., requesting the first or last item in a list)
+
+21. API Versioning (if implemented)
+    - Ensure that the correct API version is being used
+    - Test any backward compatibility measures
+
+22. Rate Limiting (if implemented)
+    - Test the behavior when rate limits are exceeded
+    - Verify rate limit headers in responses
+
+23. CORS Testing (for browser-based clients)
+    - Test API access from different origins
+    - Verify that CORS headers are correctly set
+
+24. Webhook
